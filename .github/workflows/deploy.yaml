@@ -13,7 +13,16 @@ jobs:
     steps:
       - name: Checkout the files
         uses: actions/checkout@v2
-
+      - name: Install Node.js
+        uses: actions/setup-node@v1
+        with:
+          node-version: '10.x'
+      - name: Install yarn
+        run: npm install -g yarn
+      - name: Install dependencies
+        run: yarn install
+      - name: Run build task
+        run: yarn build 
       - name: Deploy to Server 1
         uses: easingthemes/ssh-deploy@main
         env:
@@ -21,3 +30,4 @@ jobs:
           REMOTE_HOST: ${{ secrets.HOST_DNS }}
           REMOTE_USER: ${{ secrets.USERNAME }}
           TARGET: ${{ secrets.TARGET_DIR }}
+          EXCLUDE: "/dist/, /node_modules/"
